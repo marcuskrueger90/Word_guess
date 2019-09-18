@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Question Game</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+ 
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <img src="images/famous_art_header.jpg" style="width: 175%">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6" id="artistPhoto">
+                <h1 id="theArtist"></h1>
+
+            </div>
+            <div class="col-6" id="gameContent">
+                <h2>Guess the Artist!</h2>
+
+                <h1 id="currentWord">_ _ _ _ _ _ _ _ _ _ _ _ _ _</h1>
+                <p>
+                    Wins
+                    <h1 id="winCount"></h1>
+                </p>
+                <p>
+                    Losses
+                    <h1 id="lossCount"></h1>
+                </p>
+                
+
+                <p><strong>Number of Guesses Remaining</strong>
+                <span id="remainingChances"></span></p>
+
+                <strong>Letters already guessed</strong>
+                <span id="usedLetters"></span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</body>
+<script>
+//variables
+
+var FamousArtist = [
+    "walker",
+    "basquiat",
+    "bansky",
+    "warhol",
+    "adams",
+    "picaso",
+    "okeeffe",
+    "davinci",
+    "wright",
+    "dali",
+    "stieglitz",
+    "bourgeois",
+];
+
+var randomArtist = ""; 
+
+var lettersInArtistName = [];
+
+var blanks = 0;
+
+var correctCharacters = [];
+
+var wrongGuesses = [];
+
+var usedLetters = "";
+
+var winCounter = 0;
+var lossCounter = 0;
+var guessesLeft = 7;
+
+
+// functions
+
+function startGame(){
+    guessesLeft = 7;
+
+    randomArtist=FamousArtist[Math.floor(Math.random()* FamousArtist.length)];
+
+    lettersInArtistName = randomArtist.split("");
+
+    blanks = lettersInArtistName.length;
+
+    console.log(randomArtist);
+
+    correctCharacters = [];
+
+    wrongGuesses= [];
+
+    for (var i = 0; i<blanks; i++){
+        correctCharacters.push("_");
+    }
+
+    console.log(correctCharacters);
+
+    document.getElementById("remainingChances").innerHTML = guessesLeft;
+
+    document.getElementById("currentWord").innerHTML = correctCharacters.join(" ");
+
+    document.getElementById("usedLetters").innerHTML = wrongGuesses.join(" ");
+}
+
+function checkCharacter(letter) {
+
+    var characterInName = false;
+
+    for (var i =0; i < blanks; i++){
+        if (randomArtist[i]===letter) {
+            characterInName=true;
+        }
+    }
+
+    if (characterInName){
+        for (var j=0; j<blanks; j++){
+
+            if (randomArtist[j]===letter){
+                correctCharacters[j] = letter;
+            }
+        }
+        console.log(correctCharacters);
+    }
+
+    else{
+        wrongGuesses.push(letter);
+
+        guessesLeft--;
+    }
+}
+
+function endGame(){
+
+    document.getElementById("remainingChances").innerHTML=guessesLeft;
+    
+    document.getElementById("currentWord").innerHTML = correctCharacters.join(" ");
+
+    document.getElementById("usedLetters").innerHTML = wrongGuesses.join(" ");
+
+    if (lettersInArtistName.toString()=== correctCharacters.toString()){
+        
+        winCounter++;
+
+        document.getElementById("winCount").innerHTML= winCounter;
+
+        startGame();
+        
+    }
+    else if (guessesLeft === 0) {
+        
+        lossCounter++;
+
+        document.getElementById("lossCount").innerHTML= lossCounter;
+
+        startGame();
+    }
+
+}
+// function alphaOnly(event) {
+//   var key = event;
+//   return (key >= 65 && key <= 90);
+// };
+startGame();
+
+// function  isLetter(value) {
+//    value = value.toLowerCase();
+//    for (let i = 0; i < value.length; i++) 
+//       if (!(value[i] >= "A" && value[i] <= "Z")) return false;
+
+//    return true;
+// }
+// function validate(strValue) {
+//   var objRegExp  = /^[a-z]+$/;
+//   return objRegExp.test(strValue);
+// }
+function validateAlphaKeyPress(e) {
+   if (e.keyCode >= 97 && e.keyCode <= 122) {
+     return true;
+   }
+   return false;
+}
+document.onkeypress(event)
+
+document.onkeyup= function(event){
+    
+    // validate();
+
+    // isLetter();
+
+    // alphaOnly();
+    
+
+    // document.addEventListener('keyup', validateAlphaKeyPress);
+    usedLetters = String.fromCharCode(event.which).toLowerCase();
+
+    
+    
+    checkCharacter(usedLetters);
+
+    endGame();
+};
+
+// var randomArtist = function(array){
+//     return FamousArtist[Math.floor(Math.random()*FamousArtist.length)];
+// }
+
+// // console.log(randomArtist())
+
+// var randomName = randomArtist(FamousArtist);
+
+// console.log("randomName" , randomName);
+
+// textForm.addEventListener("submit", function(event){
+//     event.preventDefault();
+
+//     var guessesLeft = 5;
+//     var triedCHaracters = [];
+//     var correctCharacters = [];
+
+//     var guessArtist = guessQuerySelector.value;
+
+//     for(i=0;i<randomName; i++ ){
+//         if (guessArtist[i]===randomName[i]){
+//             correctCharacters.push(guessArtist[i])
+//             console.log("correct" + correctCharacters)
+//         }
+//     }
+// })
+
+</script>
+
+
+
+
+</html>
