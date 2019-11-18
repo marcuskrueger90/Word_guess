@@ -19,6 +19,7 @@
         <div class="row">
             <div class="col-6" id="artistPhoto">
                 <h1 id="theArtist"></h1>
+                
 
             </div>
             <div class="col-6" id="gameContent">
@@ -80,13 +81,13 @@ var usedLetters = "";
 
 var winCounter = 0;
 var lossCounter = 0;
-var guessesLeft = 7;
+var guessesLeft = 10;
 
 
 // functions
 
 function startGame(){
-    guessesLeft = 7;
+    guessesLeft = 10;
 
     randomArtist=FamousArtist[Math.floor(Math.random()* FamousArtist.length)];
 
@@ -99,6 +100,8 @@ function startGame(){
     correctCharacters = [];
 
     wrongGuesses= [];
+
+    alreadyGuessed = [];
 
     for (var i = 0; i<blanks; i++){
         correctCharacters.push("_");
@@ -116,7 +119,12 @@ function startGame(){
 function checkCharacter(letter) {
 
     var characterInName = false;
-
+    for (var k =0; k < wrongGuesses.length; k++){
+            if(wrongGuesses[k]===letter){
+                alert('You have already tried that letter');
+                guessesLeft ++;
+                }
+                }
     for (var i =0; i < blanks; i++){
         if (randomArtist[i]===letter) {
             characterInName=true;
@@ -128,17 +136,28 @@ function checkCharacter(letter) {
 
             if (randomArtist[j]===letter){
                 correctCharacters[j] = letter;
+                alreadyGuessed.push(letter);
             }
         }
-        console.log(correctCharacters);
+        
     }
 
-    else{
-        wrongGuesses.push(letter);
-
-        guessesLeft--;
+    
+    // for (var i =0; i < wrongGuesses.length; i++){
+    //         if(wrongGuesses[i]===letter){
+    //             alert('You have already tried that letter')
+            else{
+                wrongGuesses.push(letter);
+                guessesLeft--;
+            // }
     }
-}
+       
+        alreadyGuessed.push(letter);
+        console.log(alreadyGuessed);
+        
+    }
+  
+
 
 function endGame(){
 
@@ -184,13 +203,13 @@ startGame();
 //   var objRegExp  = /^[a-z]+$/;
 //   return objRegExp.test(strValue);
 // }
-function validateAlphaKeyPress(e) {
-   if (e.keyCode >= 97 && e.keyCode <= 122) {
-     return true;
-   }
-   return false;
-}
-document.onkeypress(event)
+// function validateAlphaKeyPress(e) {
+//    if (e.keyCode >= 97 && e.keyCode <= 122) {
+//      return true;
+//    }
+//    return false;
+// }
+// document.onkeypress(event)
 
 document.onkeyup= function(event){
     
@@ -211,32 +230,32 @@ document.onkeyup= function(event){
     endGame();
 };
 
-// var randomArtist = function(array){
-//     return FamousArtist[Math.floor(Math.random()*FamousArtist.length)];
-// }
+var randomArtist = function(array){
+    return FamousArtist[Math.floor(Math.random()*FamousArtist.length)];
+}
 
-// // console.log(randomArtist())
+// console.log(randomArtist())
 
-// var randomName = randomArtist(FamousArtist);
+var randomName = randomArtist(FamousArtist);
 
 // console.log("randomName" , randomName);
 
-// textForm.addEventListener("submit", function(event){
-//     event.preventDefault();
+document.addEventListener("submit", function(event){
+    event.preventDefault();
 
-//     var guessesLeft = 5;
-//     var triedCHaracters = [];
-//     var correctCharacters = [];
+    var guessesLeft = 5;
+    var triedCHaracters = [];
+    var correctCharacters = [];
 
-//     var guessArtist = guessQuerySelector.value;
+    var guessArtist = guessQuerySelector.value;
 
-//     for(i=0;i<randomName; i++ ){
-//         if (guessArtist[i]===randomName[i]){
-//             correctCharacters.push(guessArtist[i])
-//             console.log("correct" + correctCharacters)
-//         }
-//     }
-// })
+    for(i=0;i<randomName; i++ ){
+        if (guessArtist[i]===randomName[i]){
+            correctCharacters.push(guessArtist[i])
+            console.log("correct" + correctCharacters)
+        }
+    }
+})
 
 </script>
 
